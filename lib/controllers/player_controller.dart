@@ -17,12 +17,12 @@ class PlayerController extends GetxController{
 
     if(perm.isGranted)
     {
-      return audioQuery.querySongs(
+      /*return audioQuery.querySongs(
         ignoreCase: true,
         orderType: OrderType.ASC_OR_SMALLER,
         sortType: null,
         uriType: UriType.EXTERNAL,
-      );}
+      );*/}
       else
       {checkPermission();
       }}

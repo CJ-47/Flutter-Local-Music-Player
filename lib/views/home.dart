@@ -16,8 +16,10 @@ var controller = Get.put(PlayerController());
       backgroundColor: bgdarkColor,
       appBar: AppBar(
         backgroundColor: bgdarkColor,
-        actions: [IconButton(onPressed: (){}, icon:const Icon(Icons.search,color: whiteColor,))],
-        leading: Icon(Icons.sort_rounded,color: whiteColor,),
+        actions: [
+          //IconButton(onPressed: (){}, icon:const Icon(Icons.search,color: whiteColor,))
+          ],
+        leading: Icon(Icons.music_note,color: whiteColor,),
         title :Text("Music Player",style :ourStyle(
         size : 18,
         family : bold,
@@ -70,7 +72,7 @@ return Container(
   nullArtworkWidget: const Icon(Icons.music_note,color:whiteColor,size: 32,),),
   trailing: controller.playIndex.value == index && controller.isPlaying.value ? const Icon(Icons.play_arrow,color: whiteColor,size:26) : null,
   onTap: (){
-    Get.to(()=>Player(data: snapshot.data![index],),transition: Transition.downToUp,);
+    Get.to(()=>Player(data: snapshot.data!),transition: Transition.downToUp,);
     
     controller.playSong(snapshot.data![index].uri,index);
     },

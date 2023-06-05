@@ -56,7 +56,7 @@ return Container(
     borderRadius: BorderRadius.circular(12)
   ),
   
-  child: ListTile(
+  child: Obx(() => ListTile(
     tileColor: bgColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
@@ -65,10 +65,12 @@ return Container(
     title: Text("${snapshot.data![index].displayNameWOExt}",style: ourStyle(family: bold,size: 15),),
   subtitle: Text("${snapshot.data![index].artist}",style: ourStyle(family: regular,size: 12),)
   ,
-  leading: Icon(Icons.music_note,color: whiteColor,size: 32,),
-  trailing: Icon(Icons.play_arrow,color: whiteColor,size:26),
+  leading: QueryArtworkWidget(id:snapshot.data![index].id,type: ArtworkType.AUDIO,
+  nullArtworkWidget: const Icon(Icons.music_note,color:whiteColor,size: 32,),),
+  trailing: controller.playIndex.value == index && controller.isPlaying.value ? const Icon(Icons.play_arrow,color: whiteColor,size:26) : null,
+  onTap: (){controller.playSong(snapshot.data![index].uri,index);},
   ),
-);
+));
 
           }),
       );

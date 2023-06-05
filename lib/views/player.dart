@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 import 'package:mymusic/consts/colors.dart';
 import 'package:mymusic/consts/text_style.dart';
+import 'package:mymusic/controllers/player_controller.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class Player extends StatelessWidget {
-  const Player({super.key});
+  final SongModel data;
+  const Player({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var controller=Get.find<PlayerController>();
+       return Scaffold(
       backgroundColor: bgColor,
       appBar : AppBar(),
       body : Padding(
@@ -17,9 +22,12 @@ class Player extends StatelessWidget {
         child: Column(
           children: [
             Expanded(child: Container(
-              decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.yellow,),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              height:300,
+              width: 300,
+              decoration: const BoxDecoration(shape: BoxShape.circle,),
               alignment: Alignment.center,
-              child: const Icon(Icons.music_note),
+              child: QueryArtworkWidget(id: data.id, type: ArtworkType.AUDIO,artworkHeight: double.infinity,artworkWidth: double.infinity,),
                )),
                const SizedBox(height : 12,),
             Expanded(child: Container( 
@@ -28,9 +36,9 @@ class Player extends StatelessWidget {
               decoration: BoxDecoration(color : whiteColor, borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
            child: Column(
             children: [
-              Text("Music Name",style: ourStyle(color: bgdarkColor,family: bold,size: 24),),
+              Text(data.displayNameWOExt,style: ourStyle(color: bgdarkColor,family: bold,size: 24),),
                const SizedBox(height : 12),
-              Text("Artist Name",style: ourStyle(color: bgdarkColor,family: bold,size: 20),),
+              Text(data.artist.toString(),style: ourStyle(color: bgdarkColor,family: bold,size: 20),),
                const SizedBox(height : 12),
                Row(
                 children: [
@@ -44,13 +52,26 @@ class Player extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(onPressed: (){}, icon:Icon(Icons.skip_previous_rounded,size: 40,color: bgdarkColor,)),
+                Obx(() => 
                 CircleAvatar(
                   radius: 35,
                 backgroundColor : bgdarkColor,
                 child: Transform.scale(
                   scale: 2.5,
-                  child : IconButton(onPressed: (){}, icon:Icon(Icons.play_arrow_rounded,color: whiteColor,)))
-                ),
+                  child : IconButton(onPressed: (){
+                    if(controller.isPlaying.value)
+                    {
+                      controller.audioPlayer.pause();
+                      controller.isPlaying(false);
+                    }
+                    else
+                    {
+                      controller.audioPlayer.play();
+                      controller.isPlaying(true);
+                    }
+                  },
+                  icon : controller.isPlaying.value ? Icon(Icons.pause,color: whiteColor,) : Icon(Icons.play_arrow_rounded,color: whiteColor,)),)
+                )),
                 IconButton(onPressed: (){}, icon:Icon(Icons.skip_next_rounded,size: 40,color: bgdarkColor,)),
               ],
             ),

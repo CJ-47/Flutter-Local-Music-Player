@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mymusic/controllers/player_controller.dart';
+import 'package:mymusic/views/player.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../consts/colors.dart';
 import '../consts/text_style.dart';
@@ -68,7 +69,10 @@ return Container(
   leading: QueryArtworkWidget(id:snapshot.data![index].id,type: ArtworkType.AUDIO,
   nullArtworkWidget: const Icon(Icons.music_note,color:whiteColor,size: 32,),),
   trailing: controller.playIndex.value == index && controller.isPlaying.value ? const Icon(Icons.play_arrow,color: whiteColor,size:26) : null,
-  onTap: (){controller.playSong(snapshot.data![index].uri,index);},
+  onTap: (){
+    Get.to(()=>const Player());
+    //controller.playSong(snapshot.data![index].uri,index);
+    },
   ),
 ));
 
